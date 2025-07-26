@@ -1,458 +1,465 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, Phone, Mail, MapPin, Instagram, Star, Leaf, Mountain, Users, Calendar, ArrowRight, MessageCircle } from 'lucide-react';
+import './App.css';
+import heroImage from '../images/1.jpg';
 
-const HomePage = () => {
-  const [showHeader, setShowHeader] = useState(true);
-  const [hoveredLink, setHoveredLink] = useState(null);
+
+const ModernFarmstay = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // WhatsApp chat link
+  const whatsappLink = "https://wa.me/919847012345?text=Hello%20Idukki%20Heritage%20Farmstay,%20I%20would%20like%20to%20book%20a%20stay";
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setShowHeader(currentScrollY < lastScrollY || currentScrollY < 100);
-      lastScrollY = currentScrollY;
+      setIsScrolled(window.scrollY > 50);
+      
+      // Update active section based on scroll position
+      const sections = ['home', 'about', 'experiences', 'gallery', 'contact'];
+      const scrollPosition = window.scrollY + 100;
+      
+      sections.forEach(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+          }
+        }
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLinkHover = (link) => {
-    setHoveredLink(link);
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleLinkLeave = () => {
-    setHoveredLink(null);
+  const openWhatsApp = () => {
+    window.open(whatsappLink, '_blank');
   };
+
+  const galleryImages = [
+    {
+      src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      alt: "Traditional Kerala Architecture",
+      category: "Architecture"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1566438480900-0609be27a4be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      alt: "Tea Plantation Views",
+      category: "Landscape"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      alt: "Spice Garden",
+      category: "Nature"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      alt: "Traditional Kerala Cuisine",
+      category: "Cuisine"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      alt: "Waterfall Trek",
+      category: "Adventure"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1590736969955-71cc94901144?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      alt: "Cultural Performance",
+      category: "Culture"
+    }
+  ];
+
+  const experiences = [
+    {
+      icon: <Leaf className="experience-icon" />,
+      title: "Spice Plantation Tours",
+      description: "Walk through aromatic cardamom, pepper, and cinnamon plantations with expert guides."
+    },
+    {
+      icon: <Mountain className="experience-icon" />,
+      title: "Mountain Trekking",
+      description: "Explore misty trails leading to breathtaking viewpoints and hidden waterfalls."
+    },
+    {
+      icon: <Users className="experience-icon" />,
+      title: "Cultural Immersion",
+      description: "Experience authentic Kerala traditions, Kathakali performances, and local crafts."
+    },
+    {
+      icon: <Calendar className="experience-icon" />,
+      title: "Seasonal Activities",
+      description: "Monsoon photography, harvest festivals, and stargazing sessions."
+    }
+  ];
 
   return (
-    <div style={styles.container}>
-      {/* Header */}
-      <header
-        style={{
-          ...styles.header,
-          top: showHeader ? 0 : "-100px",
-        }}
-      >
-        <h2 style={styles.logo}>Idukki Heritage Farmstay</h2>
-        <nav>
-          <ul style={styles.navList}>
-            {['home', 'about', 'contact'].map((link) => (
-              <li key={link}>
-                <a 
-                  href={`#${link}`}
-                  style={{
-                    ...styles.navLink,
-                    ...(hoveredLink === link && styles.navLinkHover)
-                  }}
-                  onMouseEnter={() => handleLinkHover(link)}
-                  onMouseLeave={handleLinkLeave}
-                >
-                  {link.charAt(0).toUpperCase() + link.slice(1)}
-                </a>
-              </li>
+    <div className="farmstay-container">
+      {/* Navigation */}
+      <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
+        <div className="nav-content">
+          <div className={`logo ${isScrolled ? 'logo-scrolled' : ''}`}>
+            Idukki Heritage
+          </div>
+          
+          <div className="nav-links">
+            {['home', 'about', 'experiences', 'gallery', 'contact'].map((section) => (
+              <button
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className={`nav-link ${activeSection === section ? 'nav-link-active' : ''} ${isScrolled ? 'nav-link-scrolled' : ''}`}
+              >
+                {section}
+              </button>
             ))}
-          </ul>
-        </nav>
-      </header>
+          </div>
 
-      
+          <button onClick={openWhatsApp} className="whatsapp-btn-nav">
+            <MessageCircle className="whatsapp-icon" />
+            WhatsApp Chat
+          </button>
+        </div>
+      </nav>
+
       {/* Hero Section */}
-<section style={styles.hero} id="home">
-  <div style={styles.overlay}>
-    <h1 style={styles.title}>Idukki Heritage Farmstay</h1>
-    <p style={styles.subtitle}>Escape to Kerala's soulful highlands</p>
-    
-    {/* WhatsApp Booking Button */}
-    <a 
-      href="https://wa.me/919847012345?text=Hello%20Idukki%20Heritage%20Farmstay,%20I%20would%20like%20to%20book%20a%20stay" 
-      style={{
-        display: 'inline-block',
-        backgroundColor: '#25D366', // WhatsApp green
-        color: 'white',
-        padding: '12px 24px',
-        borderRadius: '50px',
-        textDecoration: 'none',
-        fontSize: '18px',
-        fontWeight: 'bold',
-        marginTop: '30px',
-        transition: 'all 0.3s ease',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-        border: '2px solid white',
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-      onMouseEnter={(e) => {
-        e.target.style.transform = 'translateY(-3px)';
-        e.target.style.boxShadow = '0 6px 20px rgba(0,0,0,0.3)';
-      }}
-      onMouseLeave={(e) => {
-        e.target.style.transform = 'translateY(0)';
-        e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
-      }}
-    >
-      <span style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '10px'
-      }}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-10.446-7.42c-.083.124-.272.354-.37.475-.123.148-.247.148-.446.074-.198-.074-.836-.308-1.603-.587-.766-.28-1.42-.431-1.551-.458-.13-.025-.272-.037-.272-.111 0-.074.074-.174.124-.248.136-.173.595-.434.814-.558.297-.174.595-.26.893-.26.099 0 .198 0 .273.01.074.008.173.037.272.111.099.074.148.174.248.297.099.124.173.26.248.347.075.099.149.174.025.347-.124.174-.248.372-.372.521-.124.149-.248.297-.347.446-.099.148-.02.272.074.397.095.124.42.533.9.923.595.49.932.647 1.115.708.099.05.198.025.273-.05.074-.074.372-.409.47-.548.099-.149.198-.124.347-.074.149.05.934.434 1.094.516.16.074.272.111.322.173.05.062.05.36-.074.545-.136.186-.058.694-.26 1.237-.578.543-.318.907-.487 1.012-.533.105-.05.198-.037.272.025.074.062.471.579.471 1.393 0 .814-.545 1.63-.558 1.63-.013 0-.105-.013-.223-.037" fill="currentColor"/>
-        </svg>
-        Book Now on WhatsApp
-      </span>
-      
-      {/* Floating Kerala leaf decoration */}
-      <span style={{
-        position: 'absolute',
-        right: '-15px',
-        top: '-15px',
-        fontSize: '40px',
-        color: 'rgba(255,255,255,0.1)',
-        transform: 'rotate(30deg)'
-      }}>☘</span>
-    </a>
-  </div>
-</section>
+      <section id="home" className="hero-section">
+        <img 
+  src={heroImage}
+  alt="Idukki Heritage Farmstay"
+  className="hero-image"
+/>
 
-      {/* Welcome */}
-      <section style={styles.section} id="about">
-   <h4 style={{
-  fontSize: "2.5rem",
-  color: "#2e7d32", // Deep green reminiscent of Kerala's forests
-  textAlign: "center",
-  margin: "2rem 0",
-  fontFamily: "'Noto Sans Malayalam', 'Manjari', sans-serif",
-  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
-  position: "relative",
-  padding: "1.5rem 0",
-  background: "linear-gradient(to right, transparent, #f1f8e9, transparent)", // Light green backdrop
-  borderRadius: "8px",
-  border: "1px solid #e8f5e9", // Subtle green border
-}}>
-  <span style={{
-    display: "block",
-    position: "relative",
-    zIndex: 1,
-    padding: "0 2rem"
-  }}>
-    നമസ്കാരം!
-    <div style={{
-      position: "absolute",
-      bottom: "-8px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      width: "100px",
-      height: "3px",
-      background: "#388e3c", // Natural green accent line
-      borderRadius: "3px",
-      boxShadow: "0 2px 4px rgba(0, 100, 0, 0.2)"
-    }}></div>
-  </span>
-  
-  {/* Decorative leaf elements */}
-  <span style={{
-    position: "absolute",
-    top: "50%",
-    left: "5%",
-    fontSize: "1.5rem",
-    transform: "translateY(-50%)",
-    color: "#81c784", // Leaf green
-    opacity: 0.6
-  }}>☘</span>
-  
-  <span style={{
-    position: "absolute",
-    top: "50%",
-    right: "5%",
-    fontSize: "1.5rem",
-    transform: "translateY(-50%) rotate(180deg)",
-    color: "#81c784",
-    opacity: 0.6
-  }}>☘</span>
-</h4>
-        <p style={styles.text}>
-          Welcome to our traditional Kerala farmhouse nestled in the misty hills of Idukki.
-          Here, nature and heritage come together to offer you a soul-refreshing experience.
-        </p>
-      </section>
-
-      {/* About Farmstay */}
-      <section style={styles.imageTextSection}>
-        <img
-          src="https://t3.ftcdn.net/jpg/02/57/91/04/360_F_257910476_b8gOz265DhRrp5v1bln4ocrzTzcTpgRG.jpg"
-          alt="Farm Stay"
-          className="hover-shake"
-          style={styles.imageLeft}
-        />
-        <div style={styles.textBlock}>
-          <h2>About Our Farmstay</h2>
-          <p>
-            Built over 100 years ago using traditional materials like clay, wood, and coconut thatch,
-            our farmstay offers eco-friendly cottages, private verandas, and lush spice gardens.
+        <div className="hero-overlay" />
+        
+        <div className="hero-content">
+          <div className="hero-text">
+            <h1 className="hero-title">
+              Idukki Heritage
+            </h1>
+            <p className="hero-subtitle">
+              A Sanctuary in Kerala's Mystical Highlands
+            </p>
+            <div className="hero-divider"></div>
+          </div>
+          
+          <p className="hero-description">
+            Discover tranquility in our century-old farmhouse, where traditional Kerala architecture meets modern comfort amidst spice-scented hills.
           </p>
+          
+          <div className="hero-buttons">
+            <button onClick={openWhatsApp} className="whatsapp-btn-primary">
+              <MessageCircle className="btn-icon" />
+              Chat on WhatsApp
+              <ArrowRight className="arrow-icon" />
+            </button>
+            
+            <button onClick={() => scrollToSection('about')} className="btn-secondary">
+              Explore More
+            </button>
+          </div>
+        </div>
+
+        <div className="scroll-indicator">
+          <ChevronDown className="bounce-icon" />
         </div>
       </section>
 
-      {/* Traditional Food */}
-      <section style={styles.imageTextSectionAlt}>
-        <div style={styles.textBlock}>
-          <h2>Authentic Kerala Cuisine</h2>
-          <p>
-            Enjoy home-cooked meals prepared with ingredients straight from our garden.
-            Experience Kerala's flavors – from appam and stew to banana leaf feasts.
-          </p>
+      {/* About Section */}
+      <section id="about" className="about-section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">നമസ്കാരം</h2>
+            <div className="section-divider"></div>
+            <p className="section-description">
+              Welcome to our heritage sanctuary, where over a century of stories whisper through ancient walls built with clay, wood, and Kerala's timeless craftsmanship.
+            </p>
+          </div>
+
+          <div className="about-content">
+            <div className="about-text">
+              <div className="about-story">
+                <h3 className="about-heading">Our Heritage Story</h3>
+                <p className="about-paragraph">
+                  Built over 100 years ago using traditional materials like clay, wood, and coconut thatch, our farmstay represents authentic Kerala architecture. Every corner tells a story of sustainable living in harmony with nature.
+                </p>
+                <div className="heritage-badge">
+                  <Star className="star-icon" />
+                  <span>Heritage Property Since 1920</span>
+                </div>
+              </div>
+
+              <div className="stats-grid">
+                <div className="stat-item">
+                  <div className="stat-number">100+</div>
+                  <div className="stat-label">Years of Heritage</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-number">5★</div>
+                  <div className="stat-label">Guest Experience</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="about-image-container">
+              <img 
+                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Heritage Farmstay" 
+                className="about-image"
+              />
+              <div className="image-badge">
+                <Leaf className="badge-icon" />
+                <div className="badge-text">Eco-Friendly</div>
+                <div className="badge-subtext">100% Sustainable</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <img
-          src="https://t4.ftcdn.net/jpg/04/75/14/55/360_F_475145559_5yxMALNoLrUq2KmgkcUCcYpLR0zbfDaJ.jpg"
-          alt="Kerala Food"
-          className="hover-shake"
-          style={styles.imageRight}
-        />
       </section>
 
-      {/* Gallery */}
-     
-<section style={styles.gallerySection}>
-  <h2 style={styles.heading}>Visual Tour</h2>
-  <div style={styles.gallery}>
-    {[
-      "https://tramptraveller.com/wp-content/uploads/2020/05/12015082602271956935.jpg", // Kerala backwaters
-      "https://images.unsplash.com/photo-1566438480900-0609be27a4be?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80", // Tea plantation
-      "https://images.unsplash.com/photo-1605540436563-5bca919ae766?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80", // Spices
-      "https://tramptraveller.com/wp-content/uploads/2020/05/12015082602271956935.jpg", // Traditional house
-      "https://tramptraveller.com/wp-content/uploads/2020/05/12015082602271956935.jpg", // Idukki landscape
-      "https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80", // Kerala food
-      "https://images.unsplash.com/photo-1566438480900-0609be27a4be?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80", // Wildlife
-      "https://cdn.pixabay.com/photo/2019/12/13/07/02/idukki-4692355_640.jpg", // Hill station
-      "https://images.unsplash.com/photo-1566438480900-0609be27a4be?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80", // Waterfalls
-      "https://images.unsplash.com/photo-1605540436563-5bca919ae766?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"  // Cultural performance
-    ].map((imgSrc, idx) => (
-      <img
-        key={idx}
-        src={imgSrc}
-        alt={`Gallery ${idx + 1}`}
-        className="hover-shake"
-        style={styles.galleryImg}
-        onError={(e) => {
-          e.target.src = "https://via.placeholder.com/280x180?text=Image+Not+Found";
-        }}
-      />
-    ))}
-  </div>
-</section>
+      {/* Cuisine Section */}
+      <section className="cuisine-section">
+        <div className="container">
+          <div className="cuisine-content">
+            <div className="cuisine-image-container">
+              <img 
+                src="https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Kerala Cuisine" 
+                className="cuisine-image"
+              />
+              <div className="cuisine-badge">
+                <div className="badge-emoji">🌿</div>
+                <div className="badge-text">Farm to Table</div>
+                <div className="badge-subtext">Fresh Ingredients</div>
+              </div>
+            </div>
 
-      {/* Local Experiences */}
-      <section style={styles.sectionAlt}>
-        <h2 style={styles.heading}>Experience Idukki</h2>
-        <ul style={styles.list}>
-          <li>🌿 Spice plantation walks</li>
-          <li>🧘 Morning yoga in the hills</li>
-          <li>🎭 Cultural evenings with Kathakali</li>
-          <li>🚶‍♂️ Trekking to waterfalls</li>
-          <li>🌌 Stargazing nights</li>
-        </ul>
+            <div className="cuisine-text">
+              <h3 className="cuisine-heading">Authentic Kerala Flavors</h3>
+              <p className="cuisine-description">
+                Savor home-cooked meals prepared with ingredients straight from our organic garden. Experience the authentic taste of Kerala through traditional recipes passed down through generations.
+              </p>
+              
+              <div className="cuisine-features">
+                <div className="cuisine-feature">
+                  <div className="feature-icon">
+                    <span className="feature-emoji">🥥</span>
+                  </div>
+                  <div className="feature-content">
+                    <div className="feature-title">Traditional Breakfast</div>
+                    <div className="feature-subtitle">Appam, Puttu, and Fresh Coconut</div>
+                  </div>
+                </div>
+                
+                <div className="cuisine-feature">
+                  <div className="feature-icon">
+                    <span className="feature-emoji">🍛</span>
+                  </div>
+                  <div className="feature-content">
+                    <div className="feature-title">Sadya Feast</div>
+                    <div className="feature-subtitle">Traditional Banana Leaf Meals</div>
+                  </div>
+                </div>
+              </div>
+
+              <button onClick={openWhatsApp} className="whatsapp-btn-cuisine">
+                <MessageCircle className="btn-icon" />
+                Ask About Our Menu
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* Location Map */}
-      <section style={styles.section}>
-        <h2 style={styles.heading}>📍 Our Location</h2>
-        <div style={styles.mapContainer}>
-          <iframe
-            title="Adimali Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3922.2876858659165!2d76.952782!3d10.011504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b079970f9dd117d%3A0xa79e8f70ec86986d!2sAdimali%2C%20Kerala%20685651%2C%20India!5e0!3m2!1sen!2sin!4v1686728505583!5m2!1sen!2sin"
-            width="100%"
-            height="400"
-            style={{ border: 0, borderRadius: "10px" }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+      {/* Experiences Section */}
+      <section id="experiences" className="experiences-section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Immersive Experiences</h2>
+            <div className="section-divider"></div>
+            <p className="section-description">
+              Connect with nature and culture through carefully curated experiences that showcase the authentic essence of Idukki.
+            </p>
+          </div>
+
+          <div className="experiences-grid">
+            {experiences.map((experience, index) => (
+              <div key={index} className="experience-card">
+                <div className="experience-icon-container">
+                  {experience.icon}
+                </div>
+                <h4 className="experience-title">{experience.title}</h4>
+                <p className="experience-description">{experience.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="experiences-cta">
+            <button onClick={openWhatsApp} className="whatsapp-btn-experiences">
+              <MessageCircle className="btn-icon" />
+              Plan My Experience
+              <ArrowRight className="arrow-icon" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section id="gallery" className="gallery-section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Visual Journey</h2>
+            <div className="section-divider"></div>
+            <p className="section-description">
+              Glimpses of serenity and beauty awaiting your discovery
+            </p>
+          </div>
+
+          <div className="gallery-grid">
+            {galleryImages.map((image, index) => (
+              <div 
+                key={index} 
+                className="gallery-item"
+                onClick={() => setSelectedImage(image)}
+              >
+                <img 
+                  src={image.src} 
+                  alt={image.alt}
+                  className="gallery-image"
+                />
+                <div className="gallery-overlay">
+                  <div className="gallery-info">
+                    <div className="gallery-category">{image.category}</div>
+                    <div className="gallery-alt">{image.alt}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Location Section */}
+      <section className="location-section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Find Your Sanctuary</h2>
+            <div className="section-divider"></div>
+            <p className="section-description">
+              Nestled in the heart of Idukki's mystical landscapes
+            </p>
+          </div>
+
+          <div className="map-container">
+           <iframe
+  title="RM Hill Top Location"
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.0058082039604!2d77.0072088!3d9.933473600000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b07bd00310a6eb3%3A0x6b1e91d34b68dd40!2sR%20M%20Hill%20Top!5e0!3m2!1sen!2sin!4v1753075776524!5m2!1sen!2sin"
+  width="100%"
+  height="450"
+  style={{ border: 0 }}
+  allowFullScreen=""
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+/>
+
+
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="contact-section">
+        <div className="container">
+          <div className="section-header contact-header">
+            <h2 className="section-title contact-title">Begin Your Journey</h2>
+            <div className="section-divider contact-divider"></div>
+            <p className="section-description contact-description">
+              Ready to experience the magic of Kerala's heritage hospitality? We're here to make your stay unforgettable.
+            </p>
+          </div>
+
+          <div className="contact-grid">
+            <div className="contact-card">
+              <div className="contact-icon">
+                <Phone className="contact-icon-svg" />
+              </div>
+              <h4 className="contact-card-title">Call Us</h4>
+              <p className="contact-card-info">+91 98470 12345</p>
+              <p className="contact-card-sub">Available 24/7</p>
+            </div>
+
+            <div className="contact-card">
+              <div className="contact-icon">
+                <Mail className="contact-icon-svg" />
+              </div>
+              <h4 className="contact-card-title">Email</h4>
+              <p className="contact-card-info">idukkifarmstay@gmail.com</p>
+              <p className="contact-card-sub">Quick Response</p>
+            </div>
+
+            <div className="contact-card">
+              <div className="contact-icon">
+                <Instagram className="contact-icon-svg" />
+              </div>
+              <h4 className="contact-card-title">Follow Us</h4>
+              <p className="contact-card-info">@idukkifarmstay</p>
+              <p className="contact-card-sub">Daily Updates</p>
+            </div>
+          </div>
+
+          <div className="contact-cta">
+            
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={styles.footer} id="contact">
-        <h2 style={{ fontSize: "24px", marginBottom: "10px" }}>📞 Contact Us</h2>
-        <p>Phone: +91 98470 12345</p>
-        <p>Email: idukkifarmstay@gmail.com</p>
-        <p>Instagram: @idukkifarmstay</p>
-        <p>&copy; 2025 Idukki Heritage Farmstay</p>
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-title">Idukki Heritage Farmstay</div>
+            <p className="footer-subtitle">Preserving traditions, creating memories since 1920</p>
+            <div className="footer-location">
+              <MapPin className="footer-icon" />
+              <span>Adimali, Idukki, Kerala 685651</span>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2025 Idukki Heritage Farmstay. All rights reserved.</p>
+          </div>
+        </div>
       </footer>
 
-      <style>{`
-        .hover-shake {
-          transition: transform 0.3s ease;
-        }
+      {/* Floating WhatsApp Button
+      <button onClick={openWhatsApp} className="floating-whatsapp">
+        <MessageCircle className="floating-icon" />
+      </button> */}
 
-        .hover-shake:hover {
-          transform: scale(1.05);
-        }
-      `}</style>
+      {/* Image Modal */}
+      {selectedImage && (
+        <div className="modal-overlay" onClick={() => setSelectedImage(null)}>
+          <div className="modal-content">
+            <img 
+              src={selectedImage.src} 
+              alt={selectedImage.alt}
+              className="modal-image"
+            />
+            <button 
+              onClick={() => setSelectedImage(null)}
+              className="modal-close"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-const styles = {
-  container: {
-    fontFamily: "Georgia, serif",
-    backgroundColor: "#fffaf0",
-    scrollBehavior: "smooth",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "20px 40px 20px 20px",
-    backgroundColor: "#003300",
-    color: "white",
-    width: "100%",
-    position: "fixed",
-    top: 0,
-    zIndex: 1000,
-    transition: "top 0.3s",
-  },
-  logo: {
-    fontSize: "24px",
-    marginLeft: "20px",
-    transition: "transform 0.3s",
-  },
-  navList: {
-    listStyle: "none",
-    display: "flex",
-    gap: "25px",
-    margin: 0,
-    padding: 0,
-    marginRight: "30px",
-  },
-  navLink: {
-    color: "white",
-    textDecoration: "none",
-    fontSize: "18px",
-    padding: "8px 16px",
-    borderRadius: "4px",
-    transition: "all 0.3s ease",
-    position: "relative",
-    overflow: "hidden",
-  },
-  navLinkHover: {
-    backgroundColor: "#ffd700",
-    color: "#003300",
-    transform: "translateY(-2px)",
-  },
-  hero: {
-    marginTop: "80px",
-    backgroundImage:
-      "url('https://wallpapers.com/images/hd/4k-forest-with-dirt-pathway-sssu9mpkfvsfewvs.jpg')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    height: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-  },
-  overlay: {
-    backgroundColor: "rgba(0,0,0,0.5)",
-    padding: "60px",
-    textAlign: "center",
-    color: "white",
-  },
-  title: {
-    fontSize: "48px",
-  },
-  subtitle: {
-    fontSize: "20px",
-    fontStyle: "italic",
-  },
-  section: {
-    padding: "60px 20px",
-    maxWidth: "1000px",
-    margin: "auto",
-  },
-  sectionAlt: {
-    backgroundColor: "#fff0e6",
-    padding: "60px 20px",
-    maxWidth: "1000px",
-    margin: "auto",
-  },
-  heading: {
-    fontSize: "30px",
-    color: "#005200",
-    textAlign: "center",
-    marginBottom: "20px",
-  },
-  text: {
-    fontSize: "18px",
-    color: "#333",
-    textAlign: "center",
-  },
-  list: {
-    fontSize: "18px",
-    paddingLeft: "30px",
-    color: "#333",
-  },
-  imageTextSection: {
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "center",
-    gap: "20px",
-    padding: "40px 20px",
-    maxWidth: "1000px",
-    margin: "auto",
-  },
-  imageTextSectionAlt: {
-    display: "flex",
-    flexWrap: "wrap-reverse",
-    alignItems: "center",
-    gap: "20px",
-    padding: "40px 20px",
-    maxWidth: "1000px",
-    margin: "auto",
-  },
-  imageLeft: {
-    width: "50%",
-    borderRadius: "10px",
-    minWidth: "280px",
-  },
-  imageRight: {
-    width: "50%",
-    borderRadius: "10px",
-    minWidth: "280px",
-  },
-  textBlock: {
-    flex: 1,
-    minWidth: "280px",
-  },
-  gallerySection: {
-    backgroundColor: "#f0fff5",
-    padding: "60px 20px",
-    textAlign: "center",
-  },
-  gallery: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "20px",
-    justifyContent: "center",
-    marginTop: "20px",
-  },
-  galleryImg: {
-    width: "280px",
-    height: "180px",
-    objectFit: "cover",
-    borderRadius: "10px",
-    cursor: "pointer",
-  },
-  mapContainer: {
-    marginTop: "20px",
-  },
-  footer: {
-    backgroundColor: "#003300",
-    color: "#fff",
-    padding: "40px 20px",
-    textAlign: "center",
-  },
-};
-
-export default HomePage;
+export default ModernFarmstay;
