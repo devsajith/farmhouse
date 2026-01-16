@@ -1,0 +1,264 @@
+/* HomePage.css */
+
+.container {
+  font-family: Georgia, serif;
+  background-color: #fffaf0;
+  scroll-behavior: smooth;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px 20px 20px;
+  background-color: #003300;
+  color: white;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+
+.logo {
+  font-size: 24px;
+  margin-left: 20px;
+  transition: transform 0.3s;
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  margin-right: 30px;
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.navLinkHover {
+  background-color: #ffd700;
+  color: #003300;
+  transform: translateY(-2px);
+}
+
+.hero {
+  margin-top: 80px;
+  background-image: url('https://wallpapers.com/images/hd/4k-forest-with-dirt-pathway-sssu9mpkfvsfewvs.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 60px;
+  text-align: center;
+  color: white;
+}
+
+.title {
+  font-size: 48px;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-style: italic;
+}
+
+.whatsappBtn {
+  display: inline-block;
+  background-color: #25d366;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid white;
+  position: relative;
+  overflow: hidden;
+}
+
+.whatsappBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btnContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.leafDecoration {
+  position: absolute;
+  right: -15px;
+  top: -15px;
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.1);
+  transform: rotate(30deg);
+}
+
+.section, .sectionAlt {
+  padding: 60px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.sectionAlt {
+  background-color: #fff0e6;
+}
+
+.heading {
+  font-size: 30px;
+  color: #005200;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.text {
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}
+
+.list {
+  font-size: 18px;
+  padding-left: 30px;
+  color: #333;
+}
+
+.imageTextSection, .imageTextSectionAlt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.imageTextSectionAlt {
+  flex-wrap: wrap-reverse;
+}
+
+.imageLeft, .imageRight {
+  width: 50%;
+  border-radius: 10px;
+  min-width: 280px;
+}
+
+.textBlock {
+  flex: 1;
+  min-width: 280px;
+}
+
+.gallerySection {
+  background-color: #f0fff5;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.galleryImg {
+  width: 280px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.mapContainer {
+  margin-top: 20px;
+}
+
+.footer {
+  background-color: #003300;
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.hover-shake {
+  transition: transform 0.3s ease;
+}
+
+.hover-shake:hover {
+  transform: scale(1.05);
+}
+
+.malayalamWelcome {
+  font-size: 2.5rem;
+  color: #2e7d32;
+  text-align: center;
+  margin: 2rem 0;
+  font-family: 'Noto Sans Malayalam', 'Manjari', sans-serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  padding: 1.5rem 0;
+  background: linear-gradient(to right, transparent, #f1f8e9, transparent);
+  border-radius: 8px;
+  border: 1px solid #e8f5e9;
+}
+
+.malayalamWelcome span {
+  display: block;
+  position: relative;
+  z-index: 1;
+  padding: 0 2rem;
+}
+
+.underline {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: #388e3c;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 100, 0, 0.2);
+}
+
+.leafLeft, .leafRight {
+  position: absolute;
+  top: 50%;
+  font-size: 1.5rem;
+  transform: translateY(-50%);
+  color: #81c784;
+  opacity: 0.6;
+}
+
+.leafLeft {
+  left: 5%;
+}
+
+.leafRight {
+  right: 5%;
+  transform: translateY(-50%) rotate(180deg);
+}

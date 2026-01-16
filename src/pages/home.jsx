@@ -23,7 +23,7 @@ export default function Home() {
   // Typing effect
   useEffect(() => {
     const el = typingRef.current;
-    const texts = ["Full Stack Developer", "MERN Stack Specialist", "Web Enthusiast", "Problem Solver"];
+    const texts = ["Full Stack Developer", ".NET ", "Web Enthusiast", "Problem Solver"];
     let i = 0, j = 0, del = false;
 
     const loop = () => {
@@ -93,7 +93,9 @@ export default function Home() {
         }
         .github-corner a { color: white; font-size: 28px; }
 
-        .navbar { position:fixed; top:20px; right:20px; z-index:10; }
+        .navbar { position:fixed; top:20px; right:20px; left:auto; z-index:999; }
+
+
         .nav-links {
           display:flex; gap:15px; list-style:none;
           background:rgba(0,0,0,.6); padding:10px 20px; border-radius:30px;
